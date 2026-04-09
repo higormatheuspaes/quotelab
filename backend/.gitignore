@@ -170,6 +170,9 @@ buildNumber.properties
 .env.local
 .env.*.local
 
+### Spring local config ###
+application-local.properties
+
 ### OS ###
 .DS_Store
 Thumbs.db
