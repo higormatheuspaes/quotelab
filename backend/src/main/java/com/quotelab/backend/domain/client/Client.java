@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -44,4 +45,9 @@ public class Client {
 	private String document;
 	private String notes;
 	private OffsetDateTime createdAt;
+
+	@PrePersist
+	protected void onCreate() {
+		createdAt = OffsetDateTime.now();
+	}
 }
