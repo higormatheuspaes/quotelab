@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.client;
+package com.quotelab.backend.domain.client;
 
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

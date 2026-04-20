@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.quote;
+package com.quotelab.backend.domain.client;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,9 +11,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.math.BigDecimal;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
+
+import com.quotelab.backend.domain.user.User;
 
 
 @Getter
@@ -21,29 +23,25 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "quote_items")
-
-public class QuoteItem{
+@Table(name = "clients")
+public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "quote_id", nullable = false)
-	private Quote quote;
-
-	@Column(nullable=false)
-	private String description;
-
-	@Column(nullable=false)
-	private BigDecimal quantity;
-
-	@Column(nullable=false)
-	private BigDecimal unitPrice;
-
-	@Column(nullable=false)
-	private BigDecimal total;
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
 	@Column(nullable = false)
-	private Integer sortOrder = 0;
+	private String name;
+
+	@Column(nullable = false)
+	private String email;
+
+	private String phone;
+	private String company;
+	private String document;
+	private String notes;
+	private OffsetDateTime createdAt;
 }

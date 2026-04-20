@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.user;
+package com.quotelab.backend.domain.quote;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -18,28 +20,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
-
+@Table(name = "quote_versions")
+public class QuoteVersion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(nullable = false)
-	private String name;
+	@ManyToOne
+	@JoinColumn(name="quote_id", nullable = false)
+	private Quote quote;
 
 	@Column(nullable = false)
-	private String email;
+	private Integer versionNumber;
 
-	@Column(nullable = false)
-	private String passwordHash;
-	
-	private String companyName;
-	private String document;
-	private String phone;
-	private String logoUrl;
-	private String currency = "BRL";
-	private String defaultNotes;
+	@Column(nullable=false)
+	private String snapshot;
+
+	@Column(nullable=false)
 	private OffsetDateTime createdAt;
-	private OffsetDateTime updatedAt;
 }

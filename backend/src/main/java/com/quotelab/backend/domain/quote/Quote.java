@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.quote;
+package com.quotelab.backend.domain.quote;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,13 +14,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import java.math.BigDecimal;
-
-import com.quoutelab.backend.domain.client.Client;
-import com.quoutelab.backend.domain.user.User;
-
 import java.time.OffsetDateTime;
 import java.time.LocalDate;
 import java.util.UUID;
+
+import com.quotelab.backend.domain.client.Client;
+import com.quotelab.backend.domain.user.User;
 
 
 @Getter

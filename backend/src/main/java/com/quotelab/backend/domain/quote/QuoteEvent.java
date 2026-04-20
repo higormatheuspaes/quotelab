@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.quote;
+package com.quotelab.backend.domain.quote;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.quote;
+package com.quotelab.backend.domain.quote;
 
 import java.util.List;
 import java.util.Optional;

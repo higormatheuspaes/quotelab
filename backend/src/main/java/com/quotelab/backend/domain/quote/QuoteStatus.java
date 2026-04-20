@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.quote;
+package com.quotelab.backend.domain.quote;
 
 public enum QuoteStatus {
     DRAFT,

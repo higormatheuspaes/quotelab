@@ -1,4 +1,4 @@
-package com.quoutelab.backend.domain.quote;
+package com.quotelab.backend.domain.quote;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.time.OffsetDateTime;
+import java.math.BigDecimal;
+
 import java.util.UUID;
 
 
@@ -20,22 +21,29 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "quote_versions")
-public class QuoteVersion {
+@Table(name = "quote_items")
+
+public class QuoteItem{
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-
+	
 	@ManyToOne
-	@JoinColumn(name="quote_id", nullable = false)
+	@JoinColumn(name = "quote_id", nullable = false)
 	private Quote quote;
 
+	@Column(nullable=false)
+	private String description;
+
+	@Column(nullable=false)
+	private BigDecimal quantity;
+
+	@Column(nullable=false)
+	private BigDecimal unitPrice;
+
+	@Column(nullable=false)
+	private BigDecimal total;
+
 	@Column(nullable = false)
-	private Integer versionNumber;
-
-	@Column(nullable=false)
-	private String snapshot;
-
-	@Column(nullable=false)
-	private OffsetDateTime createdAt;
+	private Integer sortOrder = 0;
 }
