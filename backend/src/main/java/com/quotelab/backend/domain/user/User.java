@@ -3,7 +3,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
@@ -11,12 +10,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -42,4 +42,15 @@ public class User {
 	private String defaultNotes;
 	private OffsetDateTime createdAt;
 	private OffsetDateTime updatedAt;
+
+	@PrePersist
+	protected void onCreate() {
+		createdAt = OffsetDateTime.now();
+		updatedAt = OffsetDateTime.now();
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		updatedAt = OffsetDateTime.now();
+	}
 }
