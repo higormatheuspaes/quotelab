@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -55,5 +56,9 @@ public class JwtService {
 
 	public boolean isTokenValid(String token, String email) {
 		return extractEmail(token).equals(email) && !isTokenExpired(token);
+	}
+
+	public String generateRefreshToken() {
+		return UUID.randomUUID().toString();
 	}
 }

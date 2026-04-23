@@ -6,17 +6,20 @@ import org.springframework.stereotype.Service;
 
 import com.quotelab.backend.domain.user.UserRepository;
 import com.quotelab.backend.infrastructure.security.JwtService;
+import com.quotelab.backend.infrastructure.security.RefreshTokenService;
 
 @Service
 public class AuthService {
 	private final JwtService jwtService;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final RefreshTokenService refreshTokenService;
 
-	public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder) {
+	public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService) {
 		this.jwtService = jwtService;
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.refreshTokenService = refreshTokenService;
 	}
 
 	public AuthResponse register(RegisterRequest request){
@@ -31,9 +34,12 @@ public class AuthService {
 
 		userRepository.save(user);
 		String token = jwtService.generateToken(user.getEmail());
+		String refreshToken = jwtService.generateRefreshToken();
+		refreshTokenService.save(refreshToken, user.getEmail());
 
 		AuthResponse response = new AuthResponse();
 		response.setToken(token);
+		response.setRefreshToken(refreshToken);
 		return response;
 	}
 
@@ -46,10 +52,32 @@ public class AuthService {
 		}
 
 		String token = jwtService.generateToken(user.getEmail());
+		String refreshToken = jwtService.generateRefreshToken();
+		refreshTokenService.save(refreshToken, user.getEmail());
 
 		AuthResponse response = new AuthResponse();
 		response.setToken(token);
+		response.setRefreshToken(refreshToken);
 		return response;
 
+	}
+
+	public AuthResponse refresh(RefreshRequest request) {
+		String email = refreshTokenService.findEmail(request.getRefreshToken());
+		
+		if (email == null) {
+			throw new RuntimeException("Invalid refresh token");
+		}
+
+		refreshTokenService.delete(request.getRefreshToken());
+
+		String newAcessToken = jwtService.generateToken(email);
+		String newRefreshToken = jwtService.generateRefreshToken();
+		refreshTokenService.save(newRefreshToken, email);
+
+		AuthResponse response = new AuthResponse();
+		response.setToken(newAcessToken);
+		response.setRefreshToken(newRefreshToken);
+		return response;
 	}
 }

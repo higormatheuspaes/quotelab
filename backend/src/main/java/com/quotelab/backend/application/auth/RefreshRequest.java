@@ -1,8 +1,9 @@
 package com.quotelab.backend.application.auth;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class AuthResponse {
-    private String token;
+public class RefreshRequest {
+    @NotBlank
     private String refreshToken;
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.quotelab.backend.application.auth.AuthResponse;
 import com.quotelab.backend.application.auth.AuthService;
 import com.quotelab.backend.application.auth.LoginRequest;
+import com.quotelab.backend.application.auth.RefreshRequest;
 import com.quotelab.backend.application.auth.RegisterRequest;
 
 import jakarta.validation.Valid;
@@ -29,5 +30,10 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest request) { 
 		return ResponseEntity.ok(authService.login(request));
+	}
+
+	@PostMapping("/refresh")
+	public ResponseEntity<AuthResponse> refresh(@RequestBody @Valid RefreshRequest request) {
+		return ResponseEntity.ok(authService.refresh(request));
 	}
 }
