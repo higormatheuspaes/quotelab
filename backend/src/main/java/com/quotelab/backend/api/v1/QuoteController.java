@@ -1,5 +1,8 @@
 package com.quotelab.backend.api.v1;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,16 +14,17 @@ import com.quotelab.backend.application.quote.QuoteResponse;
 import com.quotelab.backend.application.quote.QuoteService;
 import com.quotelab.backend.domain.user.User;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 
-@RestController
+@Tag(name = "Orçamentos", description = "Criação e gestão de orçamentos")
 @SecurityRequirement(name = "bearerAuth")
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/quotes")
 public class QuoteController {
 	private final QuoteService quoteService;
 
+	@Operation(summary = "Criar orçamento (POST /api/v1/quotes)")
 	@PostMapping
 	public ResponseEntity<QuoteResponse> createQuote(@RequestBody CreateQuoteRequest request) {
 		User user = (User) SecurityContextHolder.getContext()

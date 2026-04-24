@@ -17,11 +17,13 @@ import com.quotelab.backend.application.client.ClientResponse;
 import com.quotelab.backend.application.client.ClientService;
 import com.quotelab.backend.application.client.CreateClientRequest;
 import com.quotelab.backend.application.client.UpdateClientRequest;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
 
+@Tag(name = "Clientes", description = "Gestão de clientes do freelancer")
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/v1/clients")
@@ -32,26 +34,31 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    @Operation(summary = "Listar clientes (GET /api/v1/clients)")
     @GetMapping
     public ResponseEntity<List<ClientResponse>> findAll() {
         return ResponseEntity.ok(clientService.findAll());
     }
 
+    @Operation(summary = "Buscar cliente por ID (GET /api/v1/clients/{id})")
     @GetMapping("/{id}")
     public ResponseEntity<ClientResponse> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(clientService.findById(id));
     }
 
+    @Operation(summary = "Cadastrar cliente (POST /api/v1/clients)")
     @PostMapping
     public ResponseEntity<ClientResponse> create(@RequestBody @Valid CreateClientRequest request) {
         return ResponseEntity.status(201).body(clientService.createClient(request));
     }
 
+    @Operation(summary = "Atualizar cliente (PUT /api/v1/clients/{id})")
     @PutMapping("/{id}")
     public ResponseEntity<ClientResponse> update(@PathVariable UUID id, @RequestBody @Valid UpdateClientRequest request) {
         return ResponseEntity.ok(clientService.updatedClient(id, request));
     }
 
+    @Operation(summary = "Excluir cliente (DELETE /api/v1/clients/{id})")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         clientService.delete(id);
