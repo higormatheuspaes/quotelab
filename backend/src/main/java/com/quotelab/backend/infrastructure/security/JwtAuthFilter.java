@@ -5,6 +5,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.quotelab.backend.domain.user.User;
+import com.quotelab.backend.domain.user.UserRepository;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,9 +18,11 @@ import java.util.List;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter{
 	private final JwtService jwtService;
+	private final UserRepository userRepository;
 
-	public JwtAuthFilter(JwtService jwtService) {
+	public JwtAuthFilter(JwtService jwtService, UserRepository userRepository) {
 		this.jwtService = jwtService;
+		this.userRepository = userRepository;
 	}
 
 	@Override
@@ -35,8 +40,13 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 				String email = jwtService.extractEmail(token);
 
 				if (jwtService.isTokenValid(token, email)){
+
+					User user = userRepository.findByEmail(email).orElseThrow(
+						() -> new RuntimeException("User not found")
+					);
+
 					UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-						email,
+						user,
 						null,
 						List.of()
 					);

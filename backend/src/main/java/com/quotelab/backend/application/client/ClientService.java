@@ -8,23 +8,19 @@ import org.springframework.stereotype.Service;
 
 import com.quotelab.backend.domain.client.Client;
 import com.quotelab.backend.domain.client.ClientRepository;
-import com.quotelab.backend.domain.user.UserRepository;
 import com.quotelab.backend.domain.user.User;
 
 @Service
 public class ClientService {
 	private final ClientRepository clientRepository;
-	private final UserRepository userRepository;
-
-	public ClientService(ClientRepository clientRepository, UserRepository userRepository) {
+	public ClientService(ClientRepository clientRepository) {
 		this.clientRepository = clientRepository;
-		this.userRepository = userRepository;
 	}
 
 	private User getAuthenticatedUser() {
-		String email = SecurityContextHolder.getContext().getAuthentication().getName();
-		return userRepository.findByEmail(email)
-			.orElseThrow(() -> new RuntimeException("User not found"));
+		return (User) SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
 	}
 
 	public ClientResponse createClient(CreateClientRequest request){
